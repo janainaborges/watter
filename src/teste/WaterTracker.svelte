@@ -6,18 +6,27 @@
     dailyWaterGoal,
     saveToStorage,
     getFromStorage,
+    addToHistory,
   } from "./store";
   import { Keyboard } from "@capacitor/keyboard";
   import { LocalNotifications } from "@capacitor/local-notifications";
-  import { scheduleWaterNotifications, scheduleBreakNotifications } from '../components/notificationManager';
-
+  import {
+    scheduleWaterNotifications,
+  } from "../components/notificationManager";
+  import InputComponent from "../components/InputComponent.svelte";
+  import ButtonComponent from "../components/ButtonComponent.svelte";
+  import History from "./History.svelte";
 
   let waterInput = 0;
   let isKeyboardVisible = false;
   let startTime: string;
   let endTime: string;
-  let waterNotificationInterval = 15; // Default to 15 minutes
-  let breakNotificationInterval = 30; // Default to 30 minutes
+  let waterNotificationInterval = 15; 
+
+  let inputElement;
+  function handleFocus() {
+    inputElement.scrollIntoView({ behavior: "smooth" });
+  }
 
   function addWater() {
     totalWater.update((n) => {
@@ -25,12 +34,14 @@
       saveToStorage("totalWater", newTotal);
       return newTotal;
     });
+    addToHistory("water", waterInput); 
     waterInput = 0;
   }
 
+
   function scheduleNotifications() {
     const waterNotificationCount =
-      (new Date(endTime).getHours() - new Date(startTime).getHours()) * 4; // 4 notificações por hora (a cada 15 minutos)
+      (new Date(endTime).getHours() - new Date(startTime).getHours()) * 4; 
     const waterAmountPerNotification = $dailyWaterGoal / waterNotificationCount;
 
     LocalNotifications.schedule({
@@ -66,7 +77,6 @@
     scheduleNotifications();
 
     scheduleWaterNotifications(startTime, endTime, waterNotificationInterval);
-    scheduleBreakNotifications(breakNotificationInterval);
   });
   const storedWater = getFromStorage("totalWater");
 
@@ -78,38 +88,20 @@
 <div class="container">
   <h2>Registro de Água</h2>
   <ProgressBar percentage={($totalWater / $dailyWaterGoal) * 100} />
-  <label> Quantidade de água (ml): </label>
+  <label> Adicione a quantidade de água (ml): </label>
   <div class="box-input">
-    <input
-      type="number"
-      bind:value={waterInput}
-      min="0"
-      pattern="\d*"
-      inputmode="numeric"
-      class={isKeyboardVisible ? "keyboard-visible" : ""}
-    />
-    <button on:click={addWater}>Adicionar</button>
+    <div>
+      <InputComponent bind:value={waterInput} />
+    </div>
+    <div>
+      <ButtonComponent label="Adicionar" onClick={addWater} />
+    </div>
   </div>
   <h3>Água ingerida hoje: {$totalWater} ml</h3>
   <p>
     Você consumiu {($totalWater / $dailyWaterGoal) * 100}% da sua meta diária!
   </p>
-  <label>Intervalo das Notificações de Água (minutos):</label>
-  <input
-    type="number"
-    bind:value={waterNotificationInterval}
-    min="1"
-    pattern="\d*"
-    inputmode="numeric"
-  />
-  <label>Intervalo das Notificações de Pausa (minutos):</label>
-  <input
-    type="number"
-    bind:value={breakNotificationInterval}
-    min="1"
-    pattern="\d*"
-    inputmode="numeric"
-  />
+  <History/>
 </div>
 
 <style>

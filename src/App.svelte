@@ -1,7 +1,7 @@
 <script>
   import BreakTracker from "./teste/BreakTracker.svelte";
   import Settings from "./teste/Settings.svelte";
-
+  import { App } from "@capacitor/app";
   import WaterTracker from "./teste/WaterTracker.svelte";
   import { Capacitor } from "@capacitor/core";
   let currentPage = "home";
@@ -24,6 +24,14 @@
     Capacitor.platform === "ios" || Capacitor.platform === "android";
 
   let platformStyles = isMobile ? "bottom: 0; align-items: start;" : "top: 0";
+
+  App.addListener("appUrlOpen", (data) => {
+    if (data.url.includes("register-water")) {
+      navigate("water");
+    } else if (data.url.includes("register-break")) {
+      navigate("break");
+    }
+  });
 </script>
 
 <nav style={platformStyles}>
@@ -35,7 +43,7 @@
             currentPage === "water" ? "active" : ""
           }`}>home</span
         >
-        Início
+        home
       </div>
     {:else}
       Início
@@ -48,9 +56,9 @@
         <span
           class={`material-symbols-outlined nav-icon material-icons ${
             currentPage === "break" ? "active" : ""
-          }`}>settings</span
+          }`}>timer</span
         >
-        Pausa
+        stop
       </div>
     {:else}
       Pausa
@@ -72,6 +80,7 @@
     {/if}
   </button> -->
 
+  <!-- 
   <button on:click={() => navigate("history")}>
     {#if isMobile}
       <div class="content-button nav-icon.active">
@@ -86,6 +95,21 @@
       Histórico
     {/if}
   </button>
+  -->
+  <button on:click={() => navigate("settings")}>
+    {#if isMobile}
+      <div class="content-button nav-icon.active">
+        <span
+          class={`material-symbols-outlined nav-icon material-icons ${
+            currentPage === "settings" ? "active" : ""
+          }`}>settings</span
+        >
+        settings
+      </div>
+    {:else}
+      Configurações
+    {/if}
+  </button>
 </nav>
 
 <div>
@@ -93,7 +117,7 @@
     <WaterTracker />
   {:else if currentPage === "break"}
     <BreakTracker />
-  {:else if currentPage === "history"}
+  {:else if currentPage === "settings"}
     <Settings />
   {:else}
     <WaterTracker />
@@ -122,13 +146,11 @@
   nav button {
     background-color: transparent;
     border: none;
-    fill: black;
     color: black;
-    padding: 0.3rem;
     justify-content: center;
     align-items: center;
     display: flex;
-    padding-bottom: 10px;
+    justify-content: space-around;
   }
 
   div {
@@ -148,5 +170,10 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 2rem;
+  }
+  .button-location {
+    position: absolute;
+    left: 0;
+    top: 10px;
   }
 </style>

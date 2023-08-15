@@ -1,14 +1,18 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import ProgressBar from "../components/ProgressBar.svelte";
-  import { totalBreaks, dailyBreakGoal, saveToStorage, getFromStorage } from "./store";
+  import { totalBreaks, dailyBreakGoal, saveToStorage, getFromStorage, addToHistory } from "./store";
+  import ButtonComponent from "../components/ButtonComponent.svelte";
+
   
+  let teste = 1
   function takeBreak() {
       totalBreaks.update((n) => {
-          const newTotal = n + 1;
+          const newTotal = n + teste;
           saveToStorage('totalBreaks', newTotal);
           return newTotal;
       });
+      addToHistory("break", teste); 
   }
   
   onMount(() => {
@@ -23,7 +27,8 @@
   <div class="container">
     <h2>Registro de Pausas</h2>
     <ProgressBar percentage={($totalBreaks / $dailyBreakGoal) * 100} />
-    <button on:click={takeBreak}>Registrar Pausa</button>
+    <ButtonComponent label="Registrar Pausa" onClick={takeBreak} />
+
     <h3>Total de pausas hoje: {$totalBreaks}</h3>
     <p>
       Você fez {($totalBreaks / $dailyBreakGoal) * 100}% das pausas recomendadas!
