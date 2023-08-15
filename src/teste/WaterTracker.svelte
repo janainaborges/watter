@@ -1,41 +1,86 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { totalWater, dailyWaterGoal } from "./store.js";
+  import ProgressBar from "../components/ProgressBar.svelte";
+  import {
+    totalWater,
+    dailyWaterGoal,
+    saveToStorage,
+    getFromStorage,
+  } from "./store";
   import { Keyboard } from "@capacitor/keyboard";
+  import { LocalNotifications } from "@capacitor/local-notifications";
+  import { scheduleWaterNotifications, scheduleBreakNotifications } from '../components/notificationManager';
+
 
   let waterInput = 0;
   let isKeyboardVisible = false;
+  let startTime: string;
+  let endTime: string;
+  let waterNotificationInterval = 15; // Default to 15 minutes
+  let breakNotificationInterval = 30; // Default to 30 minutes
 
   function addWater() {
-    totalWater.update((n) => n + waterInput);
-    waterInput = 0; // resetar o input após adicionar
+    totalWater.update((n) => {
+      const newTotal = n + waterInput;
+      saveToStorage("totalWater", newTotal);
+      return newTotal;
+    });
+    waterInput = 0;
+  }
+
+  function scheduleNotifications() {
+    const waterNotificationCount =
+      (new Date(endTime).getHours() - new Date(startTime).getHours()) * 4; // 4 notificações por hora (a cada 15 minutos)
+    const waterAmountPerNotification = $dailyWaterGoal / waterNotificationCount;
+
+    LocalNotifications.schedule({
+      notifications: [
+        {
+          title: "Hora de beber água!",
+          body: `Beba ${waterAmountPerNotification}ml agora para manter-se hidratado.`,
+          id: 1,
+          schedule: { every: "minute", count: 15 },
+          actionTypeId: "drink-water",
+          extra: null,
+        },
+        {
+          title: "Hora de uma pausa!",
+          body: "Levante-se e alongue-se um pouco.",
+          id: 2,
+          schedule: { every: "minute", count: 30 },
+          actionTypeId: "take-break",
+          extra: null,
+        },
+      ],
+    });
   }
 
   onMount(() => {
-    // Adicionar ouvinte quando o teclado é aberto
     Keyboard.addListener("keyboardDidShow", (info) => {
       isKeyboardVisible = true;
     });
-
-    // E quando o teclado é fechado
     Keyboard.addListener("keyboardDidHide", () => {
       isKeyboardVisible = false;
     });
+
+    scheduleNotifications();
+
+    scheduleWaterNotifications(startTime, endTime, waterNotificationInterval);
+    scheduleBreakNotifications(breakNotificationInterval);
   });
+  const storedWater = getFromStorage("totalWater");
+
+  if (storedWater) {
+    totalWater.set(Number(storedWater));
+  }
 </script>
 
 <div class="container">
   <h2>Registro de Água</h2>
-  <div class="progress-bar">
-    <div
-      class="progress"
-      style="width: {($totalWater / $dailyWaterGoal) * 100}%"
-    />
-  </div>
-  <label id="teste"> Quantidade de água (ml): </label>
+  <ProgressBar percentage={($totalWater / $dailyWaterGoal) * 100} />
+  <label> Quantidade de água (ml): </label>
   <div class="box-input">
     <input
-      name="teste"
       type="number"
       bind:value={waterInput}
       min="0"
@@ -43,17 +88,28 @@
       inputmode="numeric"
       class={isKeyboardVisible ? "keyboard-visible" : ""}
     />
-
     <button on:click={addWater}>Adicionar</button>
   </div>
-
   <h3>Água ingerida hoje: {$totalWater} ml</h3>
   <p>
     Você consumiu {($totalWater / $dailyWaterGoal) * 100}% da sua meta diária!
   </p>
-
-  <!-- Barra de progresso (exemplo básico) -->
-  
+  <label>Intervalo das Notificações de Água (minutos):</label>
+  <input
+    type="number"
+    bind:value={waterNotificationInterval}
+    min="1"
+    pattern="\d*"
+    inputmode="numeric"
+  />
+  <label>Intervalo das Notificações de Pausa (minutos):</label>
+  <input
+    type="number"
+    bind:value={breakNotificationInterval}
+    min="1"
+    pattern="\d*"
+    inputmode="numeric"
+  />
 </div>
 
 <style>
@@ -62,28 +118,16 @@
     flex-direction: column;
     place-items: center;
   }
-  .progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: rgb(125, 170, 193);
-    border-radius: 10px;
-  }
-
-  .progress {
-    height: 100%;
-    border-radius: 10px;
-    background-color: #053b58;
-  }
 
   .keyboard-visible input[type="number"] {
-    margin-top: 50vh; /* Ajuste conforme necessário */
+    margin-top: 50vh;
   }
 
   .box-input {
     display: flex;
     justify-content: space-between;
   }
-  label{
+  label {
     margin-top: 10px;
   }
 </style>

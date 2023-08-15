@@ -1,6 +1,7 @@
 <script>
   import BreakTracker from "./teste/BreakTracker.svelte";
   import Settings from "./teste/Settings.svelte";
+
   import WaterTracker from "./teste/WaterTracker.svelte";
   import { Capacitor } from "@capacitor/core";
   let currentPage = "home";
@@ -49,19 +50,34 @@
             currentPage === "break" ? "active" : ""
           }`}>settings</span
         >
-        Configurações
+        Pausa
       </div>
     {:else}
-      Configurações
+      Pausa
     {/if}
   </button>
 
-  <button on:click={() => navigate("setting")}>
+  <!-- <button on:click={() => navigate("break")}>
     {#if isMobile}
       <div class="content-button nav-icon.active">
         <span
           class={`material-symbols-outlined nav-icon material-icons ${
             currentPage === "setting" ? "active" : ""
+          }`}>settings</span
+        >
+        Configurações
+      </div>
+    {:else}
+      Configurações
+    {/if}
+  </button> -->
+
+  <button on:click={() => navigate("history")}>
+    {#if isMobile}
+      <div class="content-button nav-icon.active">
+        <span
+          class={`material-symbols-outlined nav-icon material-icons ${
+            currentPage === "history" ? "active" : ""
           }`}>history</span
         >
         Históricos
@@ -79,8 +95,9 @@
     <BreakTracker />
   {:else if currentPage === "history"}
     <Settings />
+  {:else}
+    <WaterTracker />
   {/if}
-  <span class="material-symbols-outlined"> settings </span>
 </div>
 
 <style>
@@ -113,7 +130,7 @@
     display: flex;
     padding-bottom: 10px;
   }
-  
+
   div {
     margin-top: 10%;
   }
