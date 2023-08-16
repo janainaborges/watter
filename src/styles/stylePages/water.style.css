@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+  }
+
+  .keyboard-visible input[type="number"] {
+    margin-top: 50vh;
+  }
+
+  .box-input {
+    display: flex;
+    justify-content: space-between;
+  }
+  label {
+    margin-top: 10px;
+  }

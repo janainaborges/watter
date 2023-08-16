@@ -36,17 +36,17 @@
   }
   input {
     padding: 0.5rem 1rem;
-    border: 1px solid #b3e0ff; /* light blue border */
-    border-radius: 5px; /* rounded edges */
+    border: 1px solid #b3e0ff; 
+    border-radius: 5px; 
     font-size: 1rem;
-    width: 100%;
+    width: 30%;
     box-sizing: border-box;
     margin-right: 0.5rem;
     outline: none;
   }
 
   input:focus {
-    border-color: #007acc; /* darker blue border for focus */
-    box-shadow: 0 0 5px rgba(0, 122, 204, 0.5); /* subtle glow on focus */
+    border-color: #007acc; 
+    box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
   }
 </style>

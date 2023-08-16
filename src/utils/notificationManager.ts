@@ -1,5 +1,5 @@
 import { LocalNotifications } from "@capacitor/local-notifications";
-import { dailyWaterGoal } from "../teste/store";
+import { dailyWaterGoal } from "../stores/store";
 
 // Verifica o status da permissão para notificações
 async function checkPermissionStatus(): Promise<boolean> {

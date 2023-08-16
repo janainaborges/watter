@@ -1,10 +1,10 @@
 <script>
-  import BreakTracker from "./teste/BreakTracker.svelte";
-  import Settings from "./teste/Settings.svelte";
+  import BreakTracker from "./pages/BreakTracker.svelte";
+  import Settings from "./pages/Settings.svelte";
   import { App } from "@capacitor/app";
-  import WaterTracker from "./teste/WaterTracker.svelte";
+  import WaterTracker from "./pages/WaterTracker.svelte";
   import { Capacitor } from "@capacitor/core";
-  import History from "./teste/History.svelte";
+  import History from "./pages/History.svelte";
   let currentPage = "home";
   function navigate(page) {
     currentPage = page;

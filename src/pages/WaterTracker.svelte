@@ -7,22 +7,23 @@
     saveToStorage,
     getFromStorage,
     addToHistory,
-  } from "./store";
+  } from "../stores/store";
   import { Keyboard } from "@capacitor/keyboard";
   import { LocalNotifications } from "@capacitor/local-notifications";
-  import {
-    scheduleWaterNotifications,
-  } from "../components/notificationManager";
+  import { scheduleWaterNotifications } from "../utils/notificationManager";
   import InputComponent from "../components/InputComponent.svelte";
   import ButtonComponent from "../components/ButtonComponent.svelte";
+  import "../styles/stylePages/water.style.css";
+  import LabelComponent from "../components/LabelComponent.svelte";
 
   let waterInput = 0;
   let isKeyboardVisible = false;
   let startTime: string;
   let endTime: string;
-  let waterNotificationInterval = 15; 
+  let waterNotificationInterval = 15;
 
   let inputElement;
+
   function handleFocus() {
     inputElement.scrollIntoView({ behavior: "smooth" });
   }
@@ -33,14 +34,13 @@
       saveToStorage("totalWater", newTotal);
       return newTotal;
     });
-    addToHistory("water", waterInput); 
+    addToHistory("water", waterInput);
     waterInput = 0;
   }
 
-
   function scheduleNotifications() {
     const waterNotificationCount =
-      (new Date(endTime).getHours() - new Date(startTime).getHours()) * 4; 
+      (new Date(endTime).getHours() - new Date(startTime).getHours()) * 4;
     const waterAmountPerNotification = $dailyWaterGoal / waterNotificationCount;
 
     LocalNotifications.schedule({
@@ -87,10 +87,16 @@
 <div class="container">
   <h2>Registro de Água</h2>
   <ProgressBar percentage={($totalWater / $dailyWaterGoal) * 100} />
-  <label> Adicione a quantidade de água (ml): </label>
+  <LabelComponent text="Adicione a quantidade de água (ml):" forId="nameInput" />
   <div class="box-input">
     <div>
-      <InputComponent type="number" inputmode="numeric"   min="1" bind:value={waterInput} pattern=""/>
+      <InputComponent
+        type="number"
+        inputmode="numeric"
+        min="1"
+        bind:value={waterInput}
+        pattern=""
+      />
     </div>
     <div>
       <ButtonComponent label="Adicionar" onClick={addWater} />
@@ -100,25 +106,4 @@
   <p>
     Você consumiu {($totalWater / $dailyWaterGoal) * 100}% da sua meta diária!
   </p>
- 
 </div>
-
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-  }
-
-  .keyboard-visible input[type="number"] {
-    margin-top: 50vh;
-  }
-
-  .box-input {
-    display: flex;
-    justify-content: space-between;
-  }
-  label {
-    margin-top: 10px;
-  }
-</style>

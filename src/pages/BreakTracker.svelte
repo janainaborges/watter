@@ -7,8 +7,9 @@
     saveToStorage,
     getFromStorage,
     addToHistory,
-  } from "./store";
+  } from "../stores/store";
   import ButtonComponent from "../components/ButtonComponent.svelte";
+  import "../styles/stylePages/break.style.css"
 
   function takeBreak() {
     totalBreaks.update((n) => {
@@ -40,11 +41,3 @@
     Você fez {($totalBreaks / $dailyBreakGoal) * 100}% das pausas recomendadas!
   </p>
 </div>
-
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-  }
-</style>
