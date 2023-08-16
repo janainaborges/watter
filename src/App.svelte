@@ -4,6 +4,7 @@
   import { App } from "@capacitor/app";
   import WaterTracker from "./teste/WaterTracker.svelte";
   import { Capacitor } from "@capacitor/core";
+  import History from "./teste/History.svelte";
   let currentPage = "home";
   function navigate(page) {
     currentPage = page;
@@ -65,22 +66,6 @@
     {/if}
   </button>
 
-  <!-- <button on:click={() => navigate("break")}>
-    {#if isMobile}
-      <div class="content-button nav-icon.active">
-        <span
-          class={`material-symbols-outlined nav-icon material-icons ${
-            currentPage === "setting" ? "active" : ""
-          }`}>settings</span
-        >
-        Configurações
-      </div>
-    {:else}
-      Configurações
-    {/if}
-  </button> -->
-
-  <!-- 
   <button on:click={() => navigate("history")}>
     {#if isMobile}
       <div class="content-button nav-icon.active">
@@ -95,7 +80,7 @@
       Histórico
     {/if}
   </button>
-  -->
+
   <button on:click={() => navigate("settings")}>
     {#if isMobile}
       <div class="content-button nav-icon.active">
@@ -119,6 +104,8 @@
     <BreakTracker />
   {:else if currentPage === "settings"}
     <Settings />
+  {:else if currentPage === "history"}
+    <History />
   {:else}
     <WaterTracker />
   {/if}

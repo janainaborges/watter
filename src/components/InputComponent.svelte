@@ -1,16 +1,34 @@
-<script>
+<script lang="ts">
   export let value;
+  export let type = "number"; 
   export let isKeyboardVisible = false;
+  export let placeholder = ""; 
+  export let min = "0";
+  export let pattern: string; 
+  export let inputmode; 
 </script>
 
+{#if type === 'number'}
 <input
   type="number"
-  bind:value
-  min="0"
-  pattern="\d*"
-  inputmode="numeric"
+  bind:value={value}
+  min={min}  
+  pattern={pattern}  
+  inputmode={inputmode}  
+  placeholder={placeholder}
   class={isKeyboardVisible ? "keyboard-visible" : ""}
 />
+{:else if type === 'text'}
+<input
+  type="text"
+  bind:value={value}
+  placeholder={placeholder}
+  class={isKeyboardVisible ? "keyboard-visible" : ""}
+  
+/>
+{:else}
+<p>Unsupported input type.</p>
+{/if}
 
 <style>
   .keyboard-visible {

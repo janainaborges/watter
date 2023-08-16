@@ -15,7 +15,6 @@
   } from "../components/notificationManager";
   import InputComponent from "../components/InputComponent.svelte";
   import ButtonComponent from "../components/ButtonComponent.svelte";
-  import History from "./History.svelte";
 
   let waterInput = 0;
   let isKeyboardVisible = false;
@@ -91,7 +90,7 @@
   <label> Adicione a quantidade de água (ml): </label>
   <div class="box-input">
     <div>
-      <InputComponent bind:value={waterInput} />
+      <InputComponent type="number" inputmode="numeric"   min="1" bind:value={waterInput} pattern=""/>
     </div>
     <div>
       <ButtonComponent label="Adicionar" onClick={addWater} />
@@ -101,7 +100,7 @@
   <p>
     Você consumiu {($totalWater / $dailyWaterGoal) * 100}% da sua meta diária!
   </p>
-  <History/>
+ 
 </div>
 
 <style>
