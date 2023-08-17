@@ -74,9 +74,10 @@
     });
 
     scheduleNotifications();
+    
+    scheduleWaterNotifications(waterNotificationInterval);
+});
 
-    scheduleWaterNotifications(startTime, endTime, waterNotificationInterval);
-  });
   const storedWater = getFromStorage("totalWater");
 
   if (storedWater) {

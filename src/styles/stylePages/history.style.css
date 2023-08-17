@@ -1,29 +1,29 @@
 table {
-  width: 80%; /* Adjust as needed */
+  width: 80%; 
   border-collapse: collapse;
   margin-top: 20px;
 }
 
 th,
 td {
-  border: 1px solid #0097a7; /* Border color */
+  border: 1px solid #0097a7;
   padding: 8px 12px;
   text-align: left;
 }
 
 th {
-  background-color: #00bcd4; /* Header background color */
+  background-color: #00bcd4; 
   color: white;
 }
 
 tr:nth-child(even) {
-  background-color: #e0f7fa; /* Even rows background color */
+  background-color: #e0f7fa; 
 }
 
 tr:hover {
-  background-color: #b2ebf2; /* Row hover background color */
+  background-color: #b2ebf2; 
 }
 
 tbody tr:first-child td {
-  font-weight: bold; /* Make the first row text bold */
+  font-weight: bold; 
 }
