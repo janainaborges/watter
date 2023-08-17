@@ -84,7 +84,7 @@
   }
 </script>
 
-<div class="container">
+<div class="app-container">
   <h2>Registro de Água</h2>
   <ProgressBar percentage={($totalWater / $dailyWaterGoal) * 100} />
   <LabelComponent text="Adicione a quantidade de água (ml):" forId="nameInput" />

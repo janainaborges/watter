@@ -5,6 +5,8 @@
   import WaterTracker from "./pages/WaterTracker.svelte";
   import { Capacitor } from "@capacitor/core";
   import History from "./pages/History.svelte";
+  import "../src/styles/app.css"
+
   let currentPage = "home";
   function navigate(page) {
     currentPage = page;
@@ -14,11 +16,11 @@
 
   if (Capacitor.platform === "ios") {
     platformStyle =
-      "padding: calc(4rem + env(safe-area-inset-top)); font-size: medium; bottom: 0 ; "; // para iOS
+      "padding: calc(4rem + env(safe-area-inset-top)); font-size: medium; bottom: 0 ; "; 
   } else if (Capacitor.platform === "android") {
-    platformStyle = "padding-top: 10px; bottom: 0"; // Exemplo para Android
+    platformStyle = "padding-top: 10px; bottom: 0";
   } else {
-    platformStyle = "padding-top: 5px; font-size: medium; top: 0; just"; // Exemplo para Web
+    platformStyle = "padding-top: 5px; font-size: medium; top: 0; just"; 
   }
 
   let isMobile =
@@ -111,56 +113,3 @@
   {/if}
 </div>
 
-<style>
-  body {
-    font-family: "Poppins", sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ccc;
-  }
-
-  nav {
-    background-color: white;
-    color: white;
-    position: fixed;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-around;
-  }
-
-  nav button {
-    background-color: transparent;
-    border: none;
-    color: black;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-  }
-
-  div {
-    margin-top: 10%;
-  }
-  .nav-icon {
-    color: #ccc;
-    font-size: 24px;
-    transition: color 0.3s;
-  }
-
-  .nav-icon.active {
-    color: black;
-    /* border-top: 1px solid black; */
-  }
-  .content-button {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 2rem;
-  }
-  .button-location {
-    position: absolute;
-    left: 0;
-    top: 10px;
-  }
-</style>

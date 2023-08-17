@@ -1,34 +1,51 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap");
-
-
-html, body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  -webkit-overflow-scrolling: touch;
-}
-
 body {
-  font-family: "Poppins", sans-serif;
-  background-color: #e8f8ff;
-  color: #0b2c46;
-}
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ccc;
+  }
 
-#app {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
+  nav {
+    background-color: white;
+    color: white;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-around;
+  }
 
+  nav button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+  }
 
-.container {
-  max-width: 600px; 
-  margin: 0 auto; 
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff; 
-  border-radius: 8px; 
-}
+  div {
+    margin-top: 10%;
+  }
+  .nav-icon {
+    color: #ccc;
+    font-size: 24px;
+    transition: color 0.3s;
+  }
+
+  .nav-icon.active {
+    color: black;
+    /* border-top: 1px solid black; */
+  }
+  .content-button {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+  }
+  .button-location {
+    position: absolute;
+    left: 0;
+    top: 10px;
+  }

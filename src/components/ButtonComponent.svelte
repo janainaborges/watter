@@ -8,8 +8,8 @@
   const dispatch = createEventDispatcher();
 
   function handleClick() {
-    onClick(); // Call the provided onClick function
-    dispatch('click'); // Dispatch a custom click event
+    onClick();
+    dispatch('click'); 
   }
 </script>
 
@@ -26,11 +26,9 @@
     font-size: 1rem;
     outline: none;
   }
-
   button:hover {
     background-color: #005999;
   }
-
   button:active {
     background-color: #004266;
   }
