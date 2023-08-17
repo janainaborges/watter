@@ -1,6 +1,6 @@
 <script lang="ts">
     export let text: string = "Default Text";
-    export let forId: string = ""; // para vincular com um elemento de entrada, se necessário
+    export let forId: string = ""; 
   </script>
   
   <label for={forId}>{text}</label>

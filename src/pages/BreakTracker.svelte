@@ -9,18 +9,15 @@
     addToHistory,
   } from "../stores/store";
   import ButtonComponent from "../components/ButtonComponent.svelte";
-  import "../styles/stylePages/break.style.css"
+  import "../styles/stylePages/break.style.css";
 
   function takeBreak() {
     totalBreaks.update((n) => {
-      totalBreaks.update((n) => n + 1);
-        saveToStorage("totalBreaks", 1);
-        return 1;
+        saveToStorage("totalBreaks", n + 1);
+        addToHistory("break");
+        return n + 1;
     });
-    addToHistory("break");  
-}
-
-
+  }
 
   onMount(() => {
     const storedBreaks = getFromStorage("totalBreaks");
@@ -29,15 +26,23 @@
       totalBreaks.set(Number(storedBreaks));
     }
   });
+
+  $: percentageBreaks = ($totalBreaks / $dailyBreakGoal) * 100;
+  $: breakMessage = percentageBreaks >= 100 
+      ? `Você passou ${percentageBreaks - 100}% da sua meta diária de pausas!`
+      : `Você fez ${percentageBreaks}% das pausas recomendadas!`;
+
 </script>
 
-<div class="container">
+<div class="app-container">
   <h2>Registro de Pausas</h2>
-  <ProgressBar percentage={($totalBreaks / $dailyBreakGoal) * 100} />
-  <ButtonComponent label="Registrar Pausa" onClick={takeBreak} />
+  <ProgressBar percentage={percentageBreaks} />
+  <div class="content">
+    <ButtonComponent label="Registrar Pausa" onClick={takeBreak} />
+  </div>
 
   <h3>Total de pausas hoje: {$totalBreaks}</h3>
   <p>
-    Você fez {($totalBreaks / $dailyBreakGoal) * 100}% das pausas recomendadas!
+    {breakMessage}
   </p>
 </div>

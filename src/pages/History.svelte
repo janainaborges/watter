@@ -27,7 +27,7 @@
   }
 </script>
 
-<div class="container">
+<div class="app-container">
   <table>
     <thead>
       <tr>
