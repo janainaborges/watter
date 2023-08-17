@@ -16,7 +16,6 @@
 
   let newDailyWaterGoal: number;
   let newDailyBreakGoal: number;
-  let currentView: "goals" | "notifications" = "goals";
 
   function handleClearCache() {
     clearStorage();
