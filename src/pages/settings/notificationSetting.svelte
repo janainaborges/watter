@@ -71,23 +71,23 @@
       </div>
     </div>
 
-    <div class="notification">
+      <LabelComponent text="Ativar e desativar as Notificações:"
+      forId="nameInput"  />
       <div class="button">
         <ButtonComponent
           label={waterNotificationsActive
-            ? "Desativar Notificações de Água"
-            : "Ativar Notificações de Água"}
+            ? "Desativar Água"
+            : "Ativar Água"}
           on:click={toggleWaterNotifications}
           backgroundColor="#272d4d"
         />
         <ButtonComponent
           label={breakNotificationsActive
-            ? "Desativar Notificações de Pausa"
-            : "Ativar Notificações de Pausa"}
+            ? "Desativar Pausa"
+            : "Ativar Pausa"}
           on:click={toggleBreakNotifications}
           backgroundColor="#272d4d"
         />
-      </div>
     </div>
   </div>
 </div>
