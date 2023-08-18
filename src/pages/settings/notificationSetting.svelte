@@ -5,41 +5,55 @@
     breakNotificationInterval,
   } from "../../stores/store";
   import {
+    cancelNotifications,
     scheduleBreakNotifications,
     scheduleWaterNotifications,
-    checkPermissionStatus,
   } from "../../utils/notificationManager";
   import ButtonComponent from "../../components/ButtonComponent.svelte";
   import LabelComponent from "../../components/LabelComponent.svelte";
   import "../../styles/stylePages/setting.style.css";
 
-  let startTime: string;
-  let endTime: string;
+  let startTime: string = "08:00";
+  let endTime: string = "20:00";
   let waterNotificationsActive = true;
   let breakNotificationsActive = true;
 
   async function handleNotificationsToggle(type: "water" | "break") {
-    const isActive = type === "water" ? waterNotificationsActive : breakNotificationsActive;
-    const notificationInterval = type === "water" ? $waterNotificationInterval : $breakNotificationInterval;
-    const scheduleFunction = type === "water" ? scheduleWaterNotifications : scheduleBreakNotifications;
+    const isActive =
+      type === "water" ? waterNotificationsActive : breakNotificationsActive;
+    const notificationInterval =
+      type === "water"
+        ? $waterNotificationInterval
+        : $breakNotificationInterval;
 
-    scheduleFunction(startTime, endTime, notificationInterval, isActive);
+    if (isActive) {
+      await (type === "water"
+        ? scheduleWaterNotifications
+        : scheduleBreakNotifications)(notificationInterval);
+    } else {
+      const baseId = type === "water" ? 1000 : 2000;
+      const numberOfNotifications =
+        ((Number(endTime.split(":")[0]) - Number(startTime.split(":")[0])) *
+          60) /
+        notificationInterval;
+      const idsToCancel = Array.from(
+        { length: numberOfNotifications },
+        (_, i) => baseId + i
+      );
+
+      await cancelNotifications(idsToCancel);
+    }
     notificationsEnabled.set(isActive);
   }
 
-  function updateNotifications() {
-    handleNotificationsToggle("water");
-    handleNotificationsToggle("break");
-  }
-
-  $: updateNotifications();
-
   function toggleWaterNotifications() {
     waterNotificationsActive = !waterNotificationsActive;
+    handleNotificationsToggle("water");
   }
 
   function toggleBreakNotifications() {
     breakNotificationsActive = !breakNotificationsActive;
+    handleNotificationsToggle("break");
   }
 </script>
 
@@ -57,21 +71,23 @@
       </div>
     </div>
 
-    <div class="button">
-      <ButtonComponent
-        label={waterNotificationsActive
-          ? "Desativar Notificações de Água"
-          : "Ativar Notificações de Água"}
-        on:click={toggleWaterNotifications}
-        backgroundColor="#272d4d"
-      />
-      <ButtonComponent
-        label={breakNotificationsActive
-          ? "Desativar Notificações de Pausa"
-          : "Ativar Notificações de Pausa"}
-        on:click={toggleBreakNotifications}
-        backgroundColor="#272d4d"
-      />
+      <LabelComponent text="Ativar e desativar as Notificações:"
+      forId="nameInput"  />
+      <div class="button">
+        <ButtonComponent
+          label={waterNotificationsActive
+            ? "Desativar Água"
+            : "Ativar Água"}
+          on:click={toggleWaterNotifications}
+          backgroundColor="#272d4d"
+        />
+        <ButtonComponent
+          label={breakNotificationsActive
+            ? "Desativar Pausa"
+            : "Ativar Pausa"}
+          on:click={toggleBreakNotifications}
+          backgroundColor="#272d4d"
+        />
     </div>
   </div>
 </div>

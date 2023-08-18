@@ -6,6 +6,8 @@
   import { Capacitor } from "@capacitor/core";
   import History from "./pages/History.svelte";
   import "../src/styles/app.css"
+  import { LocalNotifications } from "@capacitor/local-notifications";
+  import { Router, Route } from 'svelte-routing';
 
   let currentPage = "home";
   function navigate(page) {
@@ -35,6 +37,14 @@
       navigate("break");
     }
   });
+  
+  LocalNotifications.addListener('localNotificationActionPerformed', (notificationAction) => {
+    if (notificationAction.actionId === 'drink-water') {
+        navigate('/water');
+    } else if (notificationAction.actionId === 'take-break') {
+        navigate('/break');
+    }
+});
 </script>
 
 <nav style={platformStyles}>
@@ -112,4 +122,8 @@
     <WaterTracker />
   {/if}
 </div>
+<Router>
+  <Route path="/water" component={WaterTracker} />
+  <Route path="/break" component={BreakTracker} />
+</Router>
 

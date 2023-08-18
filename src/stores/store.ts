@@ -4,8 +4,8 @@ export const totalWater = writable(0);
 export const dailyWaterGoal = writable(2000);
 export const totalBreaks = writable(0);
 export const dailyBreakGoal = writable(8);
-export const breakNotificationInterval = writable(30);
-export const waterNotificationInterval = writable(15);
+export const waterNotificationInterval = writable(15); 
+export const breakNotificationInterval = writable(30); 
 export const notificationsEnabled = writable(true);
 export const historyStore = writable([]);
 
